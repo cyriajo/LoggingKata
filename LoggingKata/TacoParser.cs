@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using log4net;
+using log4net.Core;
 
 namespace LoggingKata
 {
@@ -9,18 +12,48 @@ namespace LoggingKata
     /// </summary>
     public class TacoParser
     {
-        public TacoParser()
-        {
-
-        }
-
-        private static readonly ILog Logger =
+       private static readonly ILog Logger =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ITrackable Parse(string line)
         {
-            //DO not fail if one record parsing fails, return null
-            return null; //TODO Implement
-        }
+            var cells = line.Split(',');
+
+            if (cells.Length < 3)
+            {
+                Logger.Error("Must have at least three elements to parse into ITrackable");
+                return null;
+            }
+
+            double lon = 0;
+            double lat = 0;
+
+            try
+            {
+                Logger.Debug("Attempt Parsing Longitude");
+                lon = double.Parse(cells[0]);
+                lat = double.Parse(cells[1]);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Failed to parse the location", e);
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var tacoBell = new TacoBell()
+            {
+                Name = cells[2],
+                Location = new Point()
+                {
+                    Latitude = lat,
+                    Longitude = lon,
+
+                }
+            }
+            ;
+            Logger.Info("Created a new Taco Bell");
+            return tacoBell;
+            }
     }
 }
