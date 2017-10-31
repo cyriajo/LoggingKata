@@ -12,7 +12,12 @@ namespace LoggingKata.Test
     {
         [Test]
         public void ShouldParseLine()
-        {
+
+        {   // Arrange
+
+            var TacoParser = new TacoParser();
+            var lessThan3 = "1234, 1234";
+            var longNotNumber = "ac, 1234, "
             //TODO: Complete ShouldParseLine
         }
     }

@@ -30,7 +30,7 @@ namespace LoggingKata
 
             try
             {
-                Logger.Debug("Attempt Parsing Longitude");
+               
                 lon = double.Parse(cells[0]);
                 lat = double.Parse(cells[1]);
             }
@@ -38,10 +38,10 @@ namespace LoggingKata
             {
                 Logger.Error("Failed to parse the location", e);
                 Console.WriteLine(e);
-                throw;
+                return null;
             }
 
-            var tacoBell = new TacoBell()
+            return new TacoBell
             {
                 Name = cells[2],
                 Location = new Point()
@@ -50,10 +50,7 @@ namespace LoggingKata
                     Longitude = lon,
 
                 }
-            }
-            ;
-            Logger.Info("Created a new Taco Bell");
-            return tacoBell;
-            }
+            };
+        }
     }
 }
